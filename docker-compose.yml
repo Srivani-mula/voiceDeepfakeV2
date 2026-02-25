@@ -1,0 +1,63 @@
+version: '3.8'
+
+services:
+  deepfake-detection:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    
+    ports:
+      - "8501:8501"
+    
+    volumes:
+      # Mount data directory
+      - ./data:/app/data
+      # Mount models directory
+      - ./models:/app/models
+      # Mount logs directory
+      - ./logs:/app/logs
+      # Mount temp directory
+      - ./temp:/app/temp
+    
+    environment:
+      # Streamlit configuration
+      STREAMLIT_SERVER_HEADLESS: "true"
+      STREAMLIT_SERVER_ENABLEXSRFPROTECTION: "false"
+      STREAMLIT_SERVER_ENABLECORS: "false"
+      
+      # Python optimization
+      PYTHONUNBUFFERED: "1"
+      PYTHONDONTWRITEBYTECODE: "1"
+    
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8501/_stcore/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 40s
+    
+    # Resource limits (adjust based on your hardware)
+    deploy:
+      resources:
+        limits:
+          cpus: '2'
+          memory: 4G
+        reservations:
+          cpus: '1'
+          memory: 2G
+    
+    # GPU support (uncomment if using NVIDIA GPU)
+    # runtime: nvidia
+    # environment:
+    #   NVIDIA_VISIBLE_DEVICES: all
+    #   NVIDIA_DRIVER_CAPABILITIES: compute,utility
+
+  # Optional: Add a reverse proxy
+  # nginx:
+  #   image: nginx:alpine
+  #   ports:
+  #     - "80:80"
+  #   volumes:
+  #     - ./nginx.conf:/etc/nginx/nginx.conf
+  #   depends_on:
+  #     - deepfake-detection
