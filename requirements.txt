@@ -1,6 +1,6 @@
 streamlit
 torch==2.5.1
-torchvision==0.20.1
+torchvision==0.24.1
 numpy
 librosa
 matplotlib
