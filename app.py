@@ -6,7 +6,9 @@ import librosa.display
 import matplotlib.pyplot as plt
 import torch.nn.functional as F
 import cv2
-
+import os
+import gdown
+import torch
 from src.models.resnet_model import ResNet18
 from src.utils.gradcam import GradCAM
 
@@ -16,6 +18,11 @@ from src.utils.gradcam import GradCAM
 # =========================================
 TARGET_LENGTH = 200
 MODEL_PATH = "best_model.pth"
+FILE_ID = "PASTE_YOUR_FILE_ID_HERE"
+
+if not os.path.exists(MODEL_PATH):
+    url = f"https://drive.google.com/uc?export=download&id={1f7YcM4RRekWJkBLiw2Uj6ZOp-HahKaFf}"
+    gdown.download(url, MODEL_PATH, quiet=False)
 DEVICE = torch.device("cuda" if torch.cuda.is_available() else "cpu")
 
 
