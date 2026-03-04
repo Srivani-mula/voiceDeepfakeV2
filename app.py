@@ -105,7 +105,7 @@ if uploaded_file is not None:
 
     st.subheader("🔍 Prediction")
     st.write(f"**Result:** {prediction}")
-    st.write(f"**Spoof Confidence:** {confidence:.4f}")
+    st.write(f"**Confidence:** {confidence:.4f}")
 
     # =========================
     # Display Log-Mel
